@@ -1,0 +1,148 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// Deutsch (Deutschland) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_DEU)
+#ifdef _WIN32
+LANGUAGE LANG_GERMAN, SUBLANG_GERMAN
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+ASIDRVSAMPLEMENU MENU DISCARDABLE 
+BEGIN
+    POPUP "&File"
+    BEGIN
+        MENUITEM "E&xit",                       ID_FILE_EXIT
+    END
+    POPUP "&Driver"
+    BEGIN
+        MENUITEM "&Open",                       IDM_OPEN_DRIVER
+        MENUITEM "&Close",                      IDM_CLOSE_DRIVER
+    END
+    POPUP "D&river (2 Circuits)"
+    BEGIN
+        MENUITEM "O&pen",                       IDM_OPEN_2_CIRCUITS
+        MENUITEM "C&lose",                      IDM_CLOSE_2_CIRCUITS
+    END
+    POPUP "&Functions"
+    BEGIN
+        MENUITEM "&Data Exchange",              IDM_FUNCTIONS_DATAEXCHANGE
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&Info...",                    IDM_ABOUT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+ABOUTBOX DIALOG DISCARDABLE  22, 17, 144, 85
+STYLE DS_MODALFRAME | WS_CAPTION | WS_SYSMENU
+CAPTION "Info"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CTEXT           "Bihl+Wiedemann GmbH",-1,0,5,144,8
+    CTEXT           "ASiDrv Sample Application",-1,0,24,144,8
+    CTEXT           "Version 2.0",-1,0,33,144,8
+    DEFPUSHBUTTON   "OK",IDOK,56,67,32,14,WS_GROUP
+    CTEXT           "Author: Daniel Rudolf",-1,0,53,144,8
+    CTEXT           "Copyright 2000",-1,0,43,144,8
+END
+
+DATAEXBOX DIALOG DISCARDABLE  0, 0, 190, 167
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+CAPTION "Data Exchange"
+FONT 8, "MS Sans Serif"
+BEGIN
+    CONTROL         "Bit 3",IDC_CHECK_IN3,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,35,96,35,10
+    CONTROL         "Bit 2",IDC_CHECK_IN2,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,35,108,35,10
+    CONTROL         "Bit 1",IDC_CHECK_IN1,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,35,120,35,10
+    CONTROL         "Bit 0",IDC_CHECK_IN0,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,35,132,35,10
+    CONTROL         "Bit 3",IDC_CHECK_OUT3,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,105,96,35,10
+    CONTROL         "Bit 2",IDC_CHECK_OUT2,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,105,108,35,10
+    CONTROL         "Bit 1",IDC_CHECK_OUT1,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,105,120,35,10
+    CONTROL         "Bit 0",IDC_CHECK_OUT0,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,105,132,35,10
+    EDITTEXT        IDC_EDIT_SLAVE_ADDR,87,45,21,13,ES_AUTOHSCROLL
+    LTEXT           "Slave Address",IDC_STATIC,34,47,49,8
+    DEFPUSHBUTTON   "&Close",IDOK,139,15,37,14,WS_GROUP
+    GROUPBOX        "Input Data",IDC_STATIC,28,81,50,65
+    GROUPBOX        "Output Data",IDC_STATIC,98,81,50,65
+    CONTROL         "Circuit 2",IDC_CHECK_CIRC2,"Button",BS_AUTOCHECKBOX | 
+                    BS_LEFTTEXT | WS_TABSTOP,137,45,40,13
+END
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+#endif    // Deutsch (Deutschland) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

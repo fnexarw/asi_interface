@@ -1,0 +1,128 @@
+; asipci2k.inf
+;
+; Installation file (.inf) for the AS-Interface PCI Master device.
+;
+; (c) Copyright 2000 Bihl+Wiedemann GmbH 
+;
+
+[Version]
+Signature="$Windows NT$"
+Provider=%B+W%
+Class=BW_ASI_MASTER
+ClassGuid={5EACA0E7-F9D4-11d3-9D0A-008048C5AD32}
+;CatalogFile=asipci2k.cat
+DriverVer=11/08/2006,1.2.0.3
+
+[DestinationDirs]
+DefaultDestDir   = 12
+
+
+; ================= Class section =====================
+
+[ClassInstall32]
+Addreg=ASiPCIClassReg
+
+[ASiPCIClassReg]
+HKR,,,0,%ClassName%
+HKR,,Icon,,-5
+
+;
+; Driver information
+;
+
+[Manufacturer]
+%B+W%   = B+W.Mfg
+
+[B+W.Mfg]
+%B+W.DeviceDesc0% = asipci2k, PCI\VEN_E159&DEV_0002&SUBSYS_00010022&REV_00
+%B+W.DeviceDesc0% = asipci2k, PCI\VEN_1172&DEV_1783&SUBSYS_D0003442&REV_01
+%B+W.DeviceDesc0% = asipci2k, PCI\VEN_3442&DEV_1783&SUBSYS_D0003442&REV_01
+%B+W.DeviceDesc0% = asipci2k, PCI\VEN_1172&DEV_1922&SUBSYS_D0003442&REV_01
+%B+W.DeviceDesc0% = asipci2k, PCI\VEN_3442&DEV_1922&SUBSYS_D0003442&REV_01
+
+
+;
+; General installation section
+;
+
+[asipci2k]
+CopyFiles=asipci2k.CopyFiles
+
+;
+; File sections
+;
+
+[asipci2k.CopyFiles]
+asipci2k.sys
+
+;
+; Service Installation
+;
+
+[asipci2k.Services]
+AddService = asipci2k, 0x00000002 , asipci2k_Service_Inst, asipci2k_EventLog_Inst
+
+[asipci2k_Service_Inst]
+DisplayName    = %asipci2k.SvcDesc%
+ServiceType    = %SERVICE_KERNEL_DRIVER%
+StartType      = %SERVICE_DEMAND_START%
+ErrorControl   = %SERVICE_ERROR_NORMAL%
+ServiceBinary  = %12%\asipci2k.sys
+
+
+[asipci2k_EventLog_Inst]
+AddReg = asipci2k_EventLog_AddReg
+
+[asipci2k_EventLog_AddReg]
+HKR,,EventMessageFile,0x00020000,"%SystemRoot%\System32\IoLogMsg.dll;%SystemRoot%\System32\drivers\asipci2k.sys"
+HKR,,TypesSupported,0x00010001,7
+
+
+
+
+;
+; Source file information
+;
+
+[SourceDisksNames.x86]
+1 = %DiskId1%,,,""
+
+[SourceDisksFiles]
+; Files for disk Bihl+Wiedemann GmbH Installation Disk
+asipci2k.sys = 1,,
+
+
+[Strings]
+
+;
+; Non-Localizable Strings
+;
+
+SERVICE_BOOT_START		= 0x0 
+SERVICE_SYSTEM_START	= 0x1 
+SERVICE_AUTO_START		= 0x2 
+SERVICE_DEMAND_START	= 0x3 
+SERVICE_DISABLED		= 0x4 
+
+SERVICE_KERNEL_DRIVER	= 0x1 
+SERVICE_ERROR_IGNORE	= 0x0 
+SERVICE_ERROR_NORMAL	= 0x1 
+SERVICE_ERROR_SEVERE	= 0x2 
+SERVICE_ERROR_CRITICAL	= 0x3 
+
+REG_SZ					= 0x00000000
+REG_MULTI_SZ			= 0x00010000
+REG_EXPAND_SZ			= 0x00020000
+REG_BINARY				= 0x00000001
+REG_DWORD				= 0x00010001
+SERVICEROOT				= "System\CurrentControlSet\Services"
+
+;
+; Localizable Strings
+;
+
+B+W.DeviceDesc0 = "AS-Interface PCI Master"
+ClassName = "B+W AS-Interface Master"
+DiskId1 = "AS-Interface Master PCI Distribution Disk"
+B+W = "Bihl+Wiedemann GmbH"
+asipci2k.SvcDesc="AS-Interface PCI Master"

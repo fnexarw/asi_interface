@@ -1,0 +1,77 @@
+; Pcan_pci.inf
+;
+; Installation file (.inf) for the PCAN-PCI device.
+;
+; Copyright (c) 2006 PEAK-System Technik GmbH 
+;
+; Auto-installation Win2000/XP
+;
+
+[Version]
+Signature="$CHICAGO$"
+Provider=%ProviderName%
+Class= %DeviceClassName%
+ClassGUID={C38C9D86-471E-4d6b-9FB6-78DDA20E3F70}
+DriverVer=08/09/2005,2.48.3.0
+
+; ------------------------------------------------------------------------------
+
+[Manufacturer]
+%MfgName%=Mfg0
+
+[Mfg0]
+%DeviceDesc%=PcanPci.DDI.Install, PCI\VEN_001C&DEV_0001
+
+; ------------------------------------------------------------------------------
+
+[ClassInstall32]
+Addreg=Class_AddReg
+
+[Class_AddReg]
+HKR,,,,%DeviceClassName%
+HKR,,Icon,,"-5"
+
+; ------------------------------------------------------------------------------
+ 
+[SourceDisksNames]
+1 = Harddisk
+
+[SourceDisksFiles]
+pcan_pci.sys = ,%10%\system32\drivers
+
+[DestinationDirs]
+PcanPci.Files.Driver.NT = 12 ; DIRID_DRIVERS
+DefaultDestDir          = 12
+
+[ControlFlags]
+ExcludeFromSelect = PCI\VEN_001C&DEV_0001
+
+; --------- Windows NT ---------
+
+[PcanPci.DDI.Install.NT]
+CopyFiles=PcanPci.Files.Driver.NT
+
+[PcanPci.DDI.Install.NT.Services]
+AddService = pcan_pci,0x00000002,PcanPci.AddService
+
+[PcanPci.AddService]
+DisplayName    = %SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 2                  ; SERVICE_AUTO_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+LoadOrderGroup = Extended Base
+ServiceBinary  = %12%\pcan_pci.sys
+
+; --------- Files (common) -------------
+
+[PcanPci.Files.Driver.NT]
+pcan_pci.sys,,,0x34
+
+;--------- Strings Section ---------------------------------------------------
+
+[Strings]
+ProviderName="PEAK-System Technik GmbH"
+MfgName="PEAK-System Technik GmbH"
+DeviceDesc="PEAKCAN PCI-card"
+DeviceClassName="CAN-Hardware"
+SvcDesc="PCAN-PCI Device Driver"

@@ -1,0 +1,56 @@
+
+[Version]
+Signature=$CHICAGO$
+Class=BW_ASI_MASTER
+ClassGuid={5EACA0E7-F9D4-11d3-9D0A-008048C5AD32}
+Provider=%String0%
+DriverVer=11/08/2006,1.2.0.3
+
+[ClassInstall]
+AddReg=asi_class.install
+
+[DestinationDirs]
+DefaultDestDir=11
+
+[Manufacturer]
+%String1%=ManfSect
+
+[ManfSect]
+%String2%=ASIInstall,PCI\VEN_E159&DEV_0002&SUBSYS_00010022&REV_00
+%String2%=ASIInstall,PCI\VEN_1172&DEV_1783&SUBSYS_D0003442&REV_01
+%String2%=ASIInstall,PCI\VEN_3442&DEV_1783&SUBSYS_D0003442&REV_01
+%String2%=ASIInstall,PCI\VEN_1172&DEV_1922&SUBSYS_D0003442&REV_01
+%String2%=ASIInstall,PCI\VEN_3442&DEV_1922&SUBSYS_D0003442&REV_01
+
+[ASIInstall]
+CopyFiles=ASIFilesSect
+AddReg=ASIRegSect,KnownVxDs
+
+[ASIFilesSect]
+asi_pci.vxd
+
+[ASIRegSect]
+HKR,,DevLoader,0,asi_pci.vxd
+
+[asi_class.install]
+HKR,,,0,%ClassName%
+HKR,,ICON,0,-5
+
+[KnownVxDs]
+HKLM,System\CurrentControlSet\Control\SessionManager\KnownVxDs,%DeviceSymbol%,0,asi_pci.vxd
+
+[ControlFlags]
+
+[SourceDisksNames]
+1=%ASIDisk%,,
+
+[SourceDisksFiles]
+asi_pci.vxd=1
+
+[Strings]
+String0="Bihl+Wiedemann GmbH"
+String1="Bihl+Wiedemann GmbH"
+String2="AS-Interface Master PCI"
+ClassName="B+W AS-Interface Master"
+ASIDisk="AS-Interface Master PCI Distribution Disk"
+DeviceSymbol="ASIPCIDev"

@@ -1,0 +1,110 @@
+; Pcan_usb.inf
+;
+; Installation file (.inf) for the PCAN-USB device.
+;
+; (c) Copyright 2006 PEAK-System Technik GmbH 
+;
+
+[Version]
+Signature="$CHICAGO$"
+Provider=%ProviderName%
+Class=%DeviceClassName%
+ClassGUID={ff646f80-8def-11d2-9449-00105a075f6b}
+DriverVer=08/09/2005,2.48.3.0
+
+; ------------------------------------------------------------------------------
+
+[Manufacturer]
+%MfgName%=Mfg0
+
+[Mfg0]
+%DeviceDesc%=PcanUsb.DDI.Install, USB\VID_0C72&PID_000C
+
+[ClassInstall32]
+Addreg=Class_AddReg
+
+[Class_AddReg]
+HKR,,,,%DeviceClassName%
+HKR,,Icon,,"-20"
+
+; ------------------------------------------------------------------------------
+
+; 9X Style
+[ClassInstall]
+Addreg=Class_AddReg
+
+; NT Style
+[ClassInstall32]
+Addreg=Class_AddReg
+
+[Class_AddReg]
+HKR,,,,%DeviceClassName%
+HKR,,Icon,,"-20"
+
+; ------------------------------------------------------------------------------
+
+[SourceDisksNames]
+1 = %DiskDesc%,,
+ 
+[SourceDisksFiles]
+pcan_usb.sys = 1
+
+[DestinationDirs]
+PcanUsb.Files.Driver    = 10,System32\Drivers
+PcanUsb.Files.Driver.NT = 10,System32\Drivers
+DefaultDestDir          = 10,System32\Drivers
+
+[ControlFlags]
+ExcludeFromSelect = USB\VID_0C72&PID_000C
+
+; --------- Windows 9X -----------------
+
+[PcanUsb.DDI.Install]
+CopyFiles=PcanUsb.Files.Driver
+AddReg=PcanUsb.9X.AddReg
+
+[PcanUsb.9X.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,pcan_usb.sys
+HKR, "Parameters", "BreakOnEntry", 0x00010001, 0
+HKLM,System\CurrentControlSet\Services\pcan_usb,Type,1,1
+HKLM,System\CurrentControlSet\Services\pcan_usb,Net1,0,"TestNet,16,0x001C"
+
+; --------- Windows NT -----------------
+
+[PcanUsb.DDI.Install.NT]
+CopyFiles=PcanUsb.Files.Driver.NT
+AddReg=PcanUsb.NT.AddReg
+
+[PcanUsb.DDI.Install.NT.Services]
+Addservice = pcan_usb, 0x00000002, PcanUsb.AddService
+
+[PcanUsb.AddService]
+DisplayName    = %SvcDesc%
+ServiceType    = 1                  ; SERVICE_KERNEL_DRIVER
+StartType      = 3                  ; SERVICE_DEMAND_START
+ErrorControl   = 1                  ; SERVICE_ERROR_NORMAL
+LoadOrderGroup = Extended Base
+ServiceBinary  = %10%\System32\Drivers\pcan_usb.sys
+
+[PcanUsb.NT.AddReg]
+HKLM,System\CurrentControlSet\Services\pcan_usb,Net1,0,"TestNet,16,0x001C"
+
+
+; --------- Files -------------
+
+[PcanUsb.Files.Driver]
+pcan_usb.sys,,,34
+
+[PcanUsb.Files.Driver.NT]
+pcan_usb.sys,,,34
+
+;--------- Strings Section ---------------------------------------------------
+
+[Strings]
+ProviderName="PEAK-System Technik GmbH"
+MfgName="PEAK-System Technik GmbH"
+DeviceDesc="PCAN-USB Device"
+SvcDesc="PCAN-USB Device Driver"
+DeviceClassName="CAN-USB-Hardware"
+DiskDesc="PCAN-USB Installation Disk"

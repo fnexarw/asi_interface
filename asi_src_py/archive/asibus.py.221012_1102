@@ -1,0 +1,157 @@
+#-------------------------------------------------------------------------------
+# Name:        module1
+# Purpose:
+#
+# Author:      ERW2HI
+#
+# Created:     17.10.2012
+# Copyright:   (c) ERW2HI 2012
+# Licence:     <your licence>
+#-------------------------------------------------------------------------------
+#!/usr/bin/env python
+
+#http://code.activestate.com/recipes/181063-windows-dll-with-pointers-parameters-calling-with-/
+import ctypes
+import errno
+import os
+import signal
+from ctypes import windll, byref
+from functools import wraps
+from asi_dtypes import *
+
+class TimeoutError(Exception):
+    pass
+
+def timeout(seconds=10, error_message=os.strerror(errno.ETIMEDOUT)):
+    def decorator(func):
+        def _handle_timeout(signum, frame):
+            raise TimeoutError(error_message)
+
+        def wrapper(*args, **kwargs):
+            signal.signal(signal.SIGALRM, _handle_timeout)
+            signal.alarm(seconds)
+            try:
+                result = func(*args, **kwargs)
+            finally:
+                signal.alarm(0)
+            return result
+
+        return wraps(func)(wrapper)
+    return decorator
+
+
+class decor:
+    def __init__(self,func):
+        self.func = func
+        self.fname = None
+        self.result = None
+
+    def __call__(self):
+        self.fname = self.func.__name__
+        self.result = self.func(ASiInterface())
+        print("Result: %s <%s>" % (self.result, self.fname))
+        return self.result
+
+class ASiInterface(decor):
+
+    def __init__(self):
+        self.ureg = ""
+        self.exit = None
+        self.InitialSettings = ""
+        self.retMasterIDObj = byref(ctypes.c_int(1))
+
+        self.handler = windll.LoadLibrary("C://Program Files (x86)/AS-Interface Control Tools/BW/en/asidrv32.dll")
+        #self.handler = windll.LoadLibrary("C://ASInterface/asidrv32.dll")
+        self.error = hex(self.handler.AASiRegisterMaster(self.retMasterIDObj))
+        self.MID = self.retMasterIDObj._obj.value
+        self.ini = hex(self.handler.AASiRegisterIniFileName(self.MID,"asidrv32.ini"))
+        self.init = hex(self.handler.AASiInit(self.MID, self.InitialSettings))
+        pass
+
+    def getVersionID(self):
+        self.versionid = byref(c_char_p(""))
+        self.respid = hex(self.handler.AASiReadVersionID(self.MID, self.versionid))
+        return self.respid
+
+    def getDriverName(self):
+        self.drvName = byref(DType.LPCSTR)
+        errDriver = hex(self.handler.AASiGetDriverName(self.MID,self.drvName,False))
+        return errDriver
+
+    def getTM(self):
+        self.tmVal = byref(c_bool(1))
+        self.tm = self.handler.AASiGetWatchdog(self.MID, self.tmVal)
+        pass
+
+    def getSettings(self):
+        #self.settings = byref(ctypes.c_char_p())
+        self.settings = byref(DType.LPCSTR)
+        self.result = hex(self.handler.AASiGetSettings(self.MID, self.settings, ctypes.c_bool(1)))
+        return self.result
+
+    def retErrorCode(self,func):
+        self.code = hex(func)
+        return self.code
+
+    def unloadDLL(self):
+        self.exit = hex(self.handler.AASiExit(self.MID))
+        return self.exit
+
+    def unregister(self):
+        if self.exit is 0x00:
+            self.ureg = self.handler.AASiUnRegisterMaster(self.MID)
+        if self.ureg is None:
+            return "unregister masterid is successful"
+
+    def getDetectedSlaves(self):
+        self.SlaveList = byref(ctypes.c_longlong(1111))
+        result = hex(self.handler.AASiReadLDS(self.MID,self.SlaveList))
+        return result
+
+    def getSlaveIDString(self):
+        self.slaveID = ctypes.c_ubyte(1)
+        self.strID = byref(ctypes.c_char_p("string_id"))
+        self.strLen = byref(ctypes.c_char_p("string_length"))
+        result = hex(self.handler.AASiReadIDString(self.MID,self.slaveID,self.strID,self.strLen))
+        return result
+
+    def getReadName(self):
+        self.rdName =  byref(ctypes.c_char_p("read_name"))
+        result = hex(self.handler.AASiReadName(self.MID,self.rdName))
+        return result
+
+
+def main():
+    asi = ASiInterface()
+    #init = asi.handler.AASiInit(asi.MID, asi.InitialSettings)
+    drv = asi.getDriverName()
+    tm = asi.getTM()
+    #sett = asi.getSettings()
+    ver = asi.getVersionID()
+    #slave = asi.getDetectedSlaves()
+    #sid = asi.getSlaveIDString()
+    #nam = asi.getReadName()
+
+    ext = asi.unloadDLL()
+    ureg = asi.unregister()
+    pass
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+##class Simple:
+##    def __init__(self):
+##        self.handler = ctypes.windll.LoadLibrary("//HI01FS01/ERW2HI$/YR2010/ECLIPSE/Cpp/simpledll/bin/Debug/simpledll.dll")
+##
+##    def test1(self):
+##        retresult = self.handler.fromDLLFunction2()
+##        print retresult
+##        pass
+##
+##    def test2(self):
+##        retresult = self.handler.fromDLLFunction()
+##        print str(retresult)
+##        pass
